@@ -7,4 +7,4 @@ With this it should be straight forward to employ this model.
 Additionally it contains the plotting routines to recreate all figures from that paper.
 In order to recreate all figures, you'll need to get additional large files (>100 Mb) from here: https://datashare.mpcdf.mpg.de/s/iiZs8VFfILThU0h 
 
-If you are using this model or parts of the code or data provided with jupyter notebook wekindly ask youto cite the corresponding paper as well as acknowledging the original source of the simulation data, the SILCC project (Walch et al. 2015, http://silcc.mpa-garching.mpg.de) 
+If you are using this model or parts of the code or data provided with the jupyter notebook we kindly ask you to cite the corresponding paper as well as acknowledging the original source of the simulation data, the SILCC project (Walch et al. 2015, http://silcc.mpa-garching.mpg.de) 
