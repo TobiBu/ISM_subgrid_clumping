@@ -153,7 +153,7 @@ def mass_sphere(path, size_sphere, c, dimensionless = True):
 
     
     #def cover_dom_mp(path, rad, samples, nside):
-def cover_dom_mp(path, rad, samples, nside, res):
+def cover_dom_mp(path, rad, samples, nside, res, radius_in_pc=True):
     '''
     Returns the density and column density of a number of spheres within the domain sampled at random locations.
     
@@ -179,15 +179,25 @@ def cover_dom_mp(path, rad, samples, nside, res):
     '''
     
     f = path[-4:]
+
+    ds = yt.load(path)
     
     prop = "cell_mass"
     pc = 3.085e18
     
-    
     #creates coordinates for each axis, with one radius of "padding"
-    x = np.arange(-7.715e+20 + rad*pc, 7.715e+20 - rad*pc, 2*rad*pc)
-    y = np.arange(-7.715e+20 + rad*pc, 7.715e+20 - rad*pc, 2*rad*pc)
-    z = np.arange(-7.715e+20 + rad*pc, 7.715e+20 - rad*pc, 2*rad*pc)
+    ledge = ds.domain_left_edge
+    redge = ds.domain_right_edge
+    if radius_in_pc:
+        radius = rad*pc
+    else:
+        radius = rad
+    # do a sanity check here
+    if radius > ds.domain_width[0].v or radius > ds.domain_width[1].v or radius > ds.domain_width[2].v:
+        print("The radius you set is too large for the box")
+    x = np.arange(ledge[0].v + radius, redge[0].v - radius, 2*radius)
+    y = np.arange(ledge[1].v + radius, redge[1].v - radius, 2*radius)
+    z = np.arange(ledge[2].v + radius, redge[2].v - radius, 2*radius)
 
     #creates "the cube"
     cube_simple = np.transpose(np.dstack((x,y,z)))
@@ -250,7 +260,7 @@ def cover_dom_mp(path, rad, samples, nside, res):
                      "median": np.asarray(median_mp), "average": np.asarray(avg_mp),
                      "centers": np.asarray(centers)}, data)
         
-def cover_dom_mpv(path, rad, samples, nside, res):
+def cover_dom_mpv(path, rad, samples, nside, res, radius_in_pc=True):
     '''
     Returns the density and column density of a number of spheres within the domain sampled at random locations.
     
@@ -286,9 +296,19 @@ def cover_dom_mpv(path, rad, samples, nside, res):
     
     
     #creates coordinates for each axis, with one radius of "padding"
-    x = np.arange(-7.715e+20 + rad*pc, 7.715e+20 - rad*pc, 2*rad*pc)
-    y = np.arange(-7.715e+20 + rad*pc, 7.715e+20 - rad*pc, 2*rad*pc)
-    z = np.arange(-7.715e+20 + rad*pc, 7.715e+20 - rad*pc, 2*rad*pc)
+    ledge = ds.domain_left_edge
+    redge = ds.domain_right_edge
+    if radius_in_pc:
+        radius = rad*pc
+    else:
+        radius = rad
+    # do a sanity check here
+    if radius > ds.domain_width[0].v or radius > ds.domain_width[1].v or radius > ds.domain_width[2].v:
+        print("The radius you set is too large for the box")
+    x = np.arange(ledge[0].v + radius, redge[0].v - radius, 2*radius)
+    y = np.arange(ledge[1].v + radius, redge[1].v - radius, 2*radius)
+    z = np.arange(ledge[2].v + radius, redge[2].v - radius, 2*radius)
+
 
     #creates "the cube"
     cube_simple = np.transpose(np.dstack((x,y,z)))
