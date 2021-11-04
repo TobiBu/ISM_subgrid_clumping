@@ -45,10 +45,8 @@ def mollw_proj(path, size_sphere, c, nside, prop = "cell_mass", do_proj = False)
     ds = yt.load(path)
 
     center = c
-    radius = (size_sphere, "pc")
+    #radius = (size_sphere, "pc")
     
-
-
     sphere = ds.sphere(center, radius)
 
     #quantity to be projected, default is cell mass, can be changed later
@@ -138,7 +136,7 @@ def mass_sphere(path, size_sphere, c, dimensionless = True):
     ds = yt.load(path)
 
     center = c
-    radius = (size_sphere, "pc")
+    #radius = (size_sphere, "pc")
     #sphere = ds.sphere(center, radius)
 
     sp = ds.sphere(c, radius)
@@ -227,9 +225,9 @@ def cover_dom_mp(path, rad, samples, nside, res, radius_in_pc=True):
 
     k = 1
     for center in centers:
-        total_mass, vol = mass_sphere(path, rad, center)
+        total_mass, vol = mass_sphere(path, radius, center)
         density.append(total_mass/vol)
-        mass = mollw_proj(path, rad, center, nside, prop)
+        mass = mollw_proj(path, radius, center, nside, prop)
         col_dens.append(mass)
         
         print("Sphere {} done".format(k))
@@ -339,9 +337,9 @@ def cover_dom_mpv(path, rad, samples, nside, res, radius_in_pc=True):
 
     k = 1
     for center in centers:
-        total_mass, vol = mass_sphere(path, rad, center)
+        total_mass, vol = mass_sphere(path, radius, center)
         density.append(total_mass/vol)
-        mass = mollw_proj(path, rad, center, nside, prop)
+        mass = mollw_proj(path, radius, center, nside, prop)
         col_dens.append(mass)
         
         sphere = ds.sphere(center, rad*pc)
